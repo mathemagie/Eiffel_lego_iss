@@ -3,6 +3,9 @@ from skyfield.api import load, wgs84
 from datetime import date
 from datetime import datetime
 
+from  LatLongUTMconversion import * 
+
+
 today = date.today()
 
 stations_url = 'http://celestrak.com/NORAD/elements/stations.txt'
@@ -28,11 +31,14 @@ geocentric = satellite.at(t)
 #print(geocentric.position.km)
 
 subpoint = wgs84.subpoint(geocentric)
-print ()
+
+print (subpoint)
 print('Latitude:', subpoint.latitude)
 print('Longitude:', subpoint.longitude)
 print('Elevation (m):', int(subpoint.elevation.m))
 print ()
+
+#(z, e, n) = LLtoUTM(23,subpoint.latitude, subpoint.longitude)
 
 me = wgs84.latlon(48.873459,2.358040)
 

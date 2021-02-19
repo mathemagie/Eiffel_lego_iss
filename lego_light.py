@@ -4,6 +4,8 @@ from bricknil import attach, start
 from bricknil.hub import PoweredUpHub
 from bricknil.sensor import Light
 
+file = "lights.txt"
+
 
 @attach(Light, name='light1')
 @attach(Light, name='light2')
@@ -31,11 +33,19 @@ class Eiffel(PoweredUpHub):
             elif brightness <= -100:
                 delta = 10
             #self.message_info("Brightness: {}".format(brightness))
-            await self.light1.set_brightness(100)
-            await self.light2.set_brightness(100)
-            await sleep(0.3)
-            await self.light1.set_brightness(0)
-            await self.light2.set_brightness(0)
+            light = open(file,'r')
+            if light != "":
+                light_resp = int(light.read())
+            if light_resp:
+                await self.light1.set_brightness(100)
+                await self.light2.set_brightness(100)
+                await sleep(0.3)
+                await self.light1.set_brightness(0)
+                await self.light2.set_brightness(0)
+            else:
+                await self.light1.set_brightness(0)
+                await self.light2.set_brightness(0)
+
 
             #await self.motor.set_speed(100)   # Setting the speed
             #await self.motor.rotate(90, speed=-50) # Turn 60 degrees counter-clockwise from current position
